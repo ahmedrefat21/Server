@@ -91,4 +91,17 @@ public class DataAccessLayer {
         }
     
     }
+    
+    
+    public synchronized ResultSet  getOnlinePlayers(){
+    
+        try {
+            this.pst=con.prepareStatement("SELECT * FROM PLAYER WHERE ISONLINE =TRUE",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            return pst.executeQuery();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
 }
