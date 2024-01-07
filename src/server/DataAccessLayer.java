@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
 /**
@@ -37,6 +39,24 @@ public class DataAccessLayer {
             DataRefaerence = new DataAccessLayer();
         }
         return DataRefaerence;
+    }
+    
+    public synchronized String getUserName(String email){
+        String userName;
+        ResultSet result;
+        PreparedStatement pstCheck;
+        try {
+            pstCheck = con.prepareStatement("select * from player where email = ?");
+            pstCheck.setString(1, email);
+            result = pstCheck.executeQuery();
+            result.next();
+            userName = result.getString(2);
+            return userName;
+        } catch (SQLException ex) {
+            System.out.println("Invalod Email address");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
 }
