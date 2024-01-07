@@ -76,8 +76,19 @@ public class DataAccessLayer {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-         
-         
+    }
+    
+    
+    public synchronized void setNotAvalible(String email){
+      
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET AVALIBLE = false WHERE EMAIL = ?");
+            pst.setString(1,email);
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     
     }
 }
