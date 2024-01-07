@@ -60,5 +60,34 @@ public class DataAccessLayer {
         }
         return "Registered Successfully";
     } 
+    
+    public synchronized String checkSignIn(String email, String password){
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+        String check;       
+        System.out.println("checkSignIn " +checkIsActive(email));
+        if(!checkIsActive(email)){
+            System.out.println(" checkSignIn: " +checkIsActive(email));
+                try { 
+            pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ? ");
+            pstCheck.setString(1, email);
+            checkRs = pstCheck.executeQuery();
+            if(checkRs.next()){
+                if(password.equals(checkRs.getString(4))){
+                    return "Logged in successfully";
+                }
+                return "Password is incorrect";
+            }
+            return "Email is incorrect";
+          } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+            return "Connection issue, please try again later";
+             }
+        }else{
+            System.out.println("This Email alreay sign-in " + checkIsActive(email));
+           return "This Email is alreay sign-in";  
+        }
+              
+    }
        
 }
