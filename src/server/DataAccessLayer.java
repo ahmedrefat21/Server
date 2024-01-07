@@ -48,9 +48,20 @@ public class DataAccessLayer {
             this.pst= con.prepareStatement("SELECT * FROM PLAYER",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             this.rs=pst.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
         }
-    
+ 
     }
     
+    public synchronized int countOfflineUsers(){
+    
+        try {
+            this.pst=con.prepareStatement("SELECT COUNT(*) FROM PLAYER WHERE ISONLINE = false",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            ResultSet result=pst.executeQuery();
+            return result.next() ? result.getInt(1):result.getInt(-1);
+        } catch (SQLException ex) {
+             ex.printStackTrace();
+        }
+        return -1;
+    }
 }
