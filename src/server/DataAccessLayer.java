@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
 /**
@@ -39,4 +41,24 @@ public class DataAccessLayer {
         return DataRefaerence;
     }
     
+    public synchronized String checkRegister(String username , String email){
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+        
+        try {
+            String queryString= new String("select USERNAME from PLAYER where USERNAME = ?");
+            pstCheck = con.prepareStatement("select * from PLAYER where USERNAME = ? and EMAIL = ?");
+            pstCheck.setString(1, username);
+            pstCheck.setString(2, email);
+            checkRs = pstCheck.executeQuery();
+            if(checkRs.next()){
+                return "already signed-up";
+            }
+        } catch (SQLException ex) {
+            System.out.println("here ");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Registered Successfully";
+    } 
+       
 }
