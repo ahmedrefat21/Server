@@ -64,4 +64,20 @@ public class DataAccessLayer {
         }
         return -1;
     }
+    
+    public synchronized void setOnline(boolean state,String email){
+    
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET ISONLINE = ? WHERE EMAIL = ?");
+            pst.setString(1,state+"");
+            pst.setString(2, email);
+            System.out.println("email:"+email+"is online now");
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+         
+         
+    
+    }
 }
