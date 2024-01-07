@@ -89,5 +89,23 @@ public class DataAccessLayer {
         }
               
     }
+    
+     public synchronized int getScore(String email){
+        int score;
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+ 
+        try {
+            pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ?");
+            pstCheck.setString(1, email);
+            checkRs = pstCheck.executeQuery();
+            checkRs.next();
+            score = checkRs.getInt(5);
+            return score;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    } 
        
 }
