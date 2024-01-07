@@ -94,4 +94,41 @@ public class DataAccessLayer {
          
      }
     
+    public synchronized boolean checkPlaying(String player){
+
+        boolean available;
+        ResultSet result;
+        PreparedStatement pstCheckAv;
+        try {
+            pstCheckAv = con.prepareStatement("select * from player where username = ?");
+            pstCheckAv.setString(1, player);
+            result = pstCheckAv.executeQuery();
+            result.next();
+            available = result.getBoolean(4);
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public synchronized String getData(String username){
+        String email;
+        ResultSet result;
+        PreparedStatement pstCheck;
+        try {
+            pstCheck = con.prepareStatement("select * from player where email = ?");
+            pstCheck.setString(1, username);
+            result = pstCheck.executeQuery();
+            result.next();
+            email = result.getString(3);
+            return email;
+        } catch (SQLException ex) {
+            System.out.println("Invalod Email address");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    
 }
