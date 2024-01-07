@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
 /**
@@ -37,6 +39,18 @@ public class DataAccessLayer {
             DataRefaerence = new DataAccessLayer();
         }
         return DataRefaerence;
+    }
+    
+    
+    public synchronized void updateResultSet(){
+    
+        try {
+            this.pst= con.prepareStatement("SELECT * FROM PLAYER",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            this.rs=pst.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
     }
     
 }
