@@ -61,10 +61,10 @@ public class DataAccessLayer {
     
     public synchronized void isPlaying(String player1, String player2){
         try {
-            pst = con.prepareStatement("update player set isPlaying = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setString(1, player1);
             pst.executeUpdate(); 
-            pst = con.prepareStatement("update player set isPlaying = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setString(1, player2);
             pst.executeUpdate();
             //updateResultSet();
@@ -72,5 +72,26 @@ public class DataAccessLayer {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public Boolean checkIsOnline(String email){
+          ResultSet checkRs;
+          PreparedStatement pstCheck;
+          Boolean isActive ;
+         try {
+            pstCheck = con.prepareStatement("select isonline from player where email = ?");
+            pstCheck.setString(1, email);
+            checkRs = pstCheck.executeQuery();
+            checkRs.next();
+            System.out.println("checkIsActive true ");
+            isActive = checkRs.getBoolean("isactive");
+            System.out.println("checkIsActive " +isActive);
+            return isActive ;
+         } catch (SQLException ex) {
+            System.out.println("Invalod Email address");
+            //Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return false;
+         
+     }
     
 }
