@@ -62,7 +62,38 @@ public class DataAccessLayer {
 
     }
     
+        public synchronized void changeOnline(){
+        try {
+            pst = con.prepareStatement("update player set ISONLINE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, "false"); //not online
+            pst.executeUpdate(); 
+         //   updateResultSet();
+             } catch (SQLException ex) {
+            System.out.println("Changed user status to offline");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }}
+        
+       public synchronized void changeToNotAvailable(){
+         try {
+            pst = con.prepareStatement("update player set AVALIBLE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, "false"); //he is playing now
+            pst.executeUpdate();
+          //  updateResultSet();
+          } catch (SQLException ex) {
+            System.out.println("Changed user status to NOT AVALIBLE");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+       
+        public synchronized void disableConnection() throws SQLException{
+            changeOnline();
+            changeToNotAvailable();
 
+           con.close();
+           rs.close();
+           pst.close();
+           DataRefaerence = null;
+    }
 
         
     }
