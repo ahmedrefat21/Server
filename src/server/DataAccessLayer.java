@@ -64,7 +64,7 @@ public class DataAccessLayer {
     public synchronized String checkSignIn(String email, String password){
         ResultSet checkRs;
         PreparedStatement pstCheck;
-        String check;       
+        String check;  
         System.out.println("checkSignIn " +checkIsActive(email));
         if(!checkIsActive(email)){
             System.out.println(" checkSignIn: " +checkIsActive(email));
@@ -107,5 +107,15 @@ public class DataAccessLayer {
         }
         return -1;
     } 
-       
+    public synchronized void updateScore(String mail, int score){
+        try {
+            pst = con.prepareStatement("update PLAYER set SCORE = ?  where EMAIL = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setInt(1, score);
+            pst.setString(2, mail);
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }   
 }
