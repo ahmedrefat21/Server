@@ -59,4 +59,18 @@ public class DataAccessLayer {
         return null;
     }
     
+    public synchronized void isPlaying(String player1, String player2){
+        try {
+            pst = con.prepareStatement("update player set isPlaying = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player1);
+            pst.executeUpdate(); 
+            pst = con.prepareStatement("update player set isPlaying = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player2);
+            pst.executeUpdate();
+            //updateResultSet();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
