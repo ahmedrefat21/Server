@@ -40,25 +40,25 @@ public class DataAccessLayer {
         }
         return DataRefaerence;
     }
-        public synchronized void login(String email,String password) throws SQLException{
+        public synchronized void login(PlayerDTO player) throws SQLException{
 
         pst = con.prepareStatement("update player set ISONLINE = ?  where email = ? and password = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
         pst.setString(1, "true");
-        pst.setString(2, email);
-        pst.setString(3, password);
+        pst.setString(2, player.getEmail());
+        pst.setString(3, player.getPassword());
         pst.executeUpdate(); 
        // updateResultSet();    
        //waiting for marim func
     }
-    
-    public synchronized void SignUp(String username , String email, String password) throws SQLException{
+    //username ,email, pass
+    public synchronized void SignUp(PlayerDTO player) throws SQLException{
 
         pst = con.prepareStatement("insert into player(username,email,password) values(?,?,?)");
-        pst.setString(1, username);
-        pst.setString(2, email);
-        pst.setString(3, password);
+        pst.setString(1, player.getUsername());
+        pst.setString(2, player.getEmail());
+        pst.setString(3, player.getPassword());
         pst.executeUpdate();
-        login(email,password);
+        login(player); ///it takes username + password
 
     }
     
