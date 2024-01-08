@@ -41,7 +41,7 @@ public class DataAccessLayer {
         return DataRefaerence;
     }
         public synchronized void login(PlayerDTO player) throws SQLException{
-
+                //take email and password
         pst = con.prepareStatement("update player set ISONLINE = ?  where email = ? and password = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
         pst.setString(1, "true");
         pst.setString(2, player.getEmail());
@@ -52,7 +52,7 @@ public class DataAccessLayer {
     }
     //username ,email, pass
     public synchronized void SignUp(PlayerDTO player) throws SQLException{
-
+                //take username - email - password
         pst = con.prepareStatement("insert into player(username,email,password) values(?,?,?)");
         pst.setString(1, player.getUsername());
         pst.setString(2, player.getEmail());
@@ -77,6 +77,7 @@ public class DataAccessLayer {
          try {
             pst = con.prepareStatement("update player set AVALIBLE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setString(1, "false"); //he is playing now
+            //mafrood a7ot playe.setAvailabe("false")???????
             pst.executeUpdate();
           //  updateResultSet();
           } catch (SQLException ex) {
