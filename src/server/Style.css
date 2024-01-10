@@ -1,0 +1,11 @@
+.root {
+    
+    -fx-background-color:#FDE8ED; 
+}
+.button{
+    -fx-text-fill:#FDE8ED;
+    -fx-background-color:#F9D459; 
+    -fx-font: 28px "Comic Sans MS";
+    -fx-font-weight: bold;
+    -fx-background-radius:10;
+}
