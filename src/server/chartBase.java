@@ -83,9 +83,7 @@ public  class chartBase extends AnchorPane {
 });
         
     }
-
-    
-    private void StartChart() {
+private void StartChart() {
     try {
         String queryTrue = "SELECT COUNT(*) AS true_count FROM PLAYER WHERE ISONLINE = true";
         String queryFalse = "SELECT COUNT(*) AS false_count FROM PLAYER WHERE ISONLINE = false";
@@ -107,14 +105,53 @@ public  class chartBase extends AnchorPane {
         }
 
         XYChart.Series<String, Double> series = new XYChart.Series<>();
-        series.getData().add(new XYChart.Data<>("Online", (double) trueCount));
-        series.getData().add(new XYChart.Data<>("Offline", (double) falseCount));
+
+        XYChart.Data<String, Double> onlineData = new XYChart.Data<>("Online", (double) trueCount);
+        XYChart.Data<String, Double> offlineData = new XYChart.Data<>("Offline", (double) falseCount);
+
+        series.getData().add(onlineData);
+        series.getData().add(offlineData);
 
         barChart.getData().add(series);
+        //adjusting labels to the two colms
+        CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
+        xAxis.setCategories(FXCollections.observableArrayList("Online", "Offline"));
     } catch (SQLException ex) {
         System.out.println(ex);
     }
 }
+    
+    
+//    private void StartChart() {
+//    try {
+//        String queryTrue = "SELECT COUNT(*) AS true_count FROM PLAYER WHERE ISONLINE = true";
+//        String queryFalse = "SELECT COUNT(*) AS false_count FROM PLAYER WHERE ISONLINE = false";
+//
+//        // Database connection
+//        con = connectDB();
+//        Statement statement = con.createStatement();
+//
+//        ResultSet rsTrue = statement.executeQuery(queryTrue);
+//        int trueCount = 0;
+//        if (rsTrue.next()) {
+//            trueCount = rsTrue.getInt("true_count");
+//        }
+//
+//        ResultSet rsFalse = statement.executeQuery(queryFalse);
+//        int falseCount = 0;
+//        if (rsFalse.next()) {
+//            falseCount = rsFalse.getInt("false_count");
+//        }
+//
+//        XYChart.Series<String, Double> series = new XYChart.Series<>();
+//        series.getData().add(new XYChart.Data<>("Online", (double) trueCount));
+//        series.getData().add(new XYChart.Data<>("Offline", (double) falseCount));
+//
+//        barChart.getData().add(series);
+//    } catch (SQLException ex) {
+//        System.out.println(ex);
+//    }
+//}
    
 
    private Connection connectDB() {
