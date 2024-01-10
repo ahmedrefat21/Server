@@ -40,15 +40,15 @@ public class DataAccessLayer {
         }
         return DataRefaerence;
     }
-        public synchronized void login(PlayerDTO player) throws SQLException{
+    public synchronized void login(PlayerDTO player) throws SQLException{
                 //take email and password
         pst = con.prepareStatement("update player set ISONLINE = ?  where email = ? and password = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
         pst.setString(1, "true");
         pst.setString(2, player.getEmail());
         pst.setString(3, player.getPassword());
         pst.executeUpdate(); 
-       // updateResultSet();    
-       //waiting for marim func
+        updateResultSet();    
+       
     }
     //username ,email, pass
     public synchronized void SignUp(PlayerDTO player) throws SQLException{
@@ -63,42 +63,43 @@ public class DataAccessLayer {
     }
     
 
-        public synchronized void changeOnline(){
+    public synchronized void changeOnline(){
         try {
             pst = con.prepareStatement("update player set ISONLINE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setString(1, "false"); //not online
             pst.executeUpdate(); 
-         //   updateResultSet();
-             } catch (SQLException ex) {
+            updateResultSet();
+            } catch (SQLException ex) {
             System.out.println("Changed user status to offline");
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }}
+            }
+    }
         
-       public synchronized void changeToNotAvailable(){
-         try {
+    public synchronized void changeToNotAvailable(){
+        try {
             pst = con.prepareStatement("update player set AVALIBLE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setString(1, "false"); //he is playing now
             //mafrood a7ot playe.setAvailabe("false")???????
             pst.executeUpdate();
-          //  updateResultSet();
-          } catch (SQLException ex) {
+            updateResultSet();
+        } catch (SQLException ex) {
             System.out.println("Changed user status to NOT AVALIBLE");
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
        
-        public synchronized void disableConnection() throws SQLException{
-            changeOnline();
-            changeToNotAvailable();
+    public synchronized void disableConnection() throws SQLException{
+        changeOnline();
+        changeToNotAvailable();
 
-           con.close();
-           rs.close();
-           pst.close();
-           DataRefaerence = null;
+        con.close();
+        rs.close();
+        pst.close();
+        DataRefaerence = null;
     }
 
         
-    }
+    
     
 
 
@@ -128,17 +129,17 @@ public class DataAccessLayer {
             pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setString(1, player2);
             pst.executeUpdate();
-            //updateResultSet();
+            updateResultSet();
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public Boolean checkIsOnline(String email){
-          ResultSet checkRs;
-          PreparedStatement pstCheck;
-          Boolean isActive ;
-         try {
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+        Boolean isActive ;
+        try {
             pstCheck = con.prepareStatement("select isonline from player where email = ?");
             pstCheck.setString(1, email);
             checkRs = pstCheck.executeQuery();
@@ -147,13 +148,12 @@ public class DataAccessLayer {
             isActive = checkRs.getBoolean("isactive");
             System.out.println("checkIsActive " +isActive);
             return isActive ;
-         } catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Invalod Email address");
             //Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         return false;
-         
-     }
+        }
+        return false; 
+    }
     
     public synchronized boolean checkPlaying(String player){
 
@@ -279,9 +279,9 @@ public class DataAccessLayer {
         ResultSet checkRs;
         PreparedStatement pstCheck;
         String check;  
-        System.out.println("checkSignIn " +checkIsActive(email));
-        if(!checkIsActive(email)){
-            System.out.println(" checkSignIn: " +checkIsActive(email));
+        System.out.println("checkSignIn " +checkIsOnline(email));
+        if(!checkIsOnline(email)){
+            System.out.println(" checkSignIn: " +checkIsOnline(email));
                 try { 
             pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ? ");
             pstCheck.setString(1, email);
@@ -298,7 +298,7 @@ public class DataAccessLayer {
             return "Connection issue, please try again later";
              }
         }else{
-            System.out.println("This Email alreay sign-in " + checkIsActive(email));
+            System.out.println("This Email alreay sign-in " + checkIsOnline(email));
            return "This Email is alreay sign-in";  
         }
               
