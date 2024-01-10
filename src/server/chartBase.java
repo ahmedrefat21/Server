@@ -82,6 +82,15 @@ public  class chartBase extends AnchorPane {
     }
 });
         
+        
+            stopBtn.setOnAction(event -> {
+                if (isChartPopulated) {
+                    disconnectDB();
+                    clearChart();
+                    isChartPopulated = false;
+                }
+            });
+        
     }
 private void StartChart() {
     try {
@@ -111,6 +120,16 @@ private void StartChart() {
 
         series.getData().add(onlineData);
         series.getData().add(offlineData);
+        onlineData.nodeProperty().addListener((ov, oldNode, newNode) -> {
+            if (newNode != null) {
+                newNode.setStyle("-fx-bar-fill: #A4C991;");
+            }
+        });
+        offlineData.nodeProperty().addListener((ov, oldNode, newNode) -> {
+            if (newNode != null) {
+                newNode.setStyle("-fx-bar-fill: #ea6e6e;");
+            }
+        });
 
         barChart.getData().add(series);
         //adjusting labels to the two colms
@@ -168,4 +187,24 @@ private void StartChart() {
     }
     return null;
 }
+   
+        private void disconnectDB() {
+         try {
+             // close the database connection
+             if (con != null) {
+                 con.close();
+                 System.out.println("Database connection closed");
+             }
+         } catch (SQLException e) {
+             System.out.println("Error closing the database connection: " + e.getMessage());
+         }
+}
+
+        private void clearChart() {
+            // clear the contents of the chart
+            barChart.getData().clear();
+            System.out.println("BarChart cleared");
+        }
+   
+   
 }
