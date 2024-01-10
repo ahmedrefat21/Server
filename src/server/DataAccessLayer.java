@@ -192,4 +192,67 @@ public class DataAccessLayer {
     }
 
     
+    
+    public synchronized void updateResultSet(){
+    
+        try {
+            this.pst= con.prepareStatement("SELECT * FROM PLAYER",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            this.rs=pst.executeQuery();
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+        }
+ 
+    }
+    
+    public synchronized int countOfflineUsers(){
+    
+        try {
+            this.pst=con.prepareStatement("SELECT COUNT(*) FROM PLAYER WHERE ISONLINE = false",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            ResultSet result=pst.executeQuery();
+            return result.next() ? result.getInt(1):result.getInt(-1);
+        } catch (SQLException ex) {
+             ex.printStackTrace();
+        }
+        return -1;
+    }
+    
+    public synchronized void setOnline(boolean state,String email){
+    
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET ISONLINE = ? WHERE EMAIL = ?");
+            pst.setString(1,state+"");
+            pst.setString(2, email);
+            System.out.println("email:"+email+"is online now");
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+    public synchronized void setNotAvalible(String email){
+      
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET AVALIBLE = false WHERE EMAIL = ?");
+            pst.setString(1,email);
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    
+    }
+    
+    
+    public synchronized ResultSet  getOnlinePlayers(){
+    
+        try {
+            this.pst=con.prepareStatement("SELECT * FROM PLAYER WHERE ISONLINE =TRUE",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            return pst.executeQuery();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
 }
