@@ -255,4 +255,81 @@ public class DataAccessLayer {
         return null;
     }
     
+    public synchronized String checkRegister(String username , String email){
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+        
+        try {
+            String queryString= new String("select USERNAME from PLAYER where USERNAME = ?");
+            pstCheck = con.prepareStatement("select * from PLAYER where USERNAME = ? and EMAIL = ?");
+            pstCheck.setString(1, username);
+            pstCheck.setString(2, email);
+            checkRs = pstCheck.executeQuery();
+            if(checkRs.next()){
+                return "already signed-up";
+            }
+        } catch (SQLException ex) {
+            System.out.println("here ");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Registered Successfully";
+    } 
+    
+    public synchronized String checkSignIn(String email, String password){
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+        String check;  
+        System.out.println("checkSignIn " +checkIsActive(email));
+        if(!checkIsActive(email)){
+            System.out.println(" checkSignIn: " +checkIsActive(email));
+                try { 
+            pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ? ");
+            pstCheck.setString(1, email);
+            checkRs = pstCheck.executeQuery();
+            if(checkRs.next()){
+                if(password.equals(checkRs.getString(4))){
+                    return "Logged in successfully";
+                }
+                return "Password is incorrect";
+            }
+            return "Email is incorrect";
+          } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+            return "Connection issue, please try again later";
+             }
+        }else{
+            System.out.println("This Email alreay sign-in " + checkIsActive(email));
+           return "This Email is alreay sign-in";  
+        }
+              
+    }
+    
+     public synchronized int getScore(String email){
+        int score;
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+ 
+        try {
+            pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ?");
+            pstCheck.setString(1, email);
+            checkRs = pstCheck.executeQuery();
+            checkRs.next();
+            score = checkRs.getInt(5);
+            return score;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    } 
+    public synchronized void updateScore(String mail, int score){
+        try {
+            pst = con.prepareStatement("update PLAYER set SCORE = ?  where EMAIL = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setInt(1, score);
+            pst.setString(2, mail);
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }   
 }
