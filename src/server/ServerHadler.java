@@ -76,6 +76,14 @@ public class ServerHadler {
       
         }
     }
+    
+    public void login(PlayerDTO player) throws SQLException{
+            String email=player.getEmail();
+            String password=player.getPassword();
+        databaseInstance.login(player);
+    }
+
+       
     public String checkRegister(PlayerDTO player){
      String Username=player.getUsername();
       String email=player.getEmail();
@@ -90,8 +98,9 @@ public class ServerHadler {
     public ResultSet getResultSet(){
         return databaseInstance.getResultSet();
     }
-    public void getActivePlayers1(){
+    public void getActivePlayersOne(){
         databaseInstance.getOnlinePlayers();
     }
-    
+
+   
 }
