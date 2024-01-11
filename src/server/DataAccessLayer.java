@@ -63,201 +63,9 @@ public class DataAccessLayer {
 
     }
     
-
-    public synchronized void changeOnline(){
-        try {
-            pst = con.prepareStatement("update player set ISONLINE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
-            pst.setString(1, "false"); //not online
-            pst.executeUpdate(); 
-            updateResultSet();
-            } catch (SQLException ex) {
-            System.out.println("Changed user status to offline");
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    }
-        
-    public synchronized void changeToNotAvailable(){
-        try {
-            pst = con.prepareStatement("update player set AVALIBLE = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
-            pst.setString(1, "false"); //he is playing now
-            //mafrood a7ot playe.setAvailabe("false")???????
-            pst.executeUpdate();
-            updateResultSet();
-        } catch (SQLException ex) {
-            System.out.println("Changed user status to NOT AVALIBLE");
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-       
-    public synchronized void disableConnection() throws SQLException{
-        changeOnline();
-        changeToNotAvailable();
-
-        con.close();
-        rs.close();
-        pst.close();
-        databaseInstance = null;
-    }
-
-        
     
     
-
-
-    public synchronized String getUserName(PlayerDTO player){
-        String userName;
-        ResultSet result;
-        PreparedStatement pstCheck;
-        try {
-            pstCheck = con.prepareStatement("select * from player where email = ?");
-            pstCheck.setString(1,player.getEmail());
-            result = pstCheck.executeQuery();
-            result.next();
-            userName = result.getString(2);
-            return userName;
-        } catch (SQLException ex) {
-            System.out.println("Invalod Email address");
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-    
-    public synchronized void isPlaying(String player1, String player2){
-        try {
-            pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
-            pst.setString(1, player1);
-            pst.executeUpdate(); 
-            pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
-            pst.setString(1, player2);
-            pst.executeUpdate();
-            updateResultSet();
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public Boolean checkIsOnline(PlayerDTO player){
-        ResultSet checkRs;
-        PreparedStatement pstCheck;
-        String email =player.getEmail();
-        Boolean isActive ;
-        try {
-            pstCheck = con.prepareStatement("select isonline from player where email = ?");
-            pstCheck.setString(1,email);
-            checkRs = pstCheck.executeQuery();
-            checkRs.next();
-            System.out.println("checkIsActive true ");
-            isActive = checkRs.getBoolean("isactive");
-            System.out.println("checkIsActive " +isActive);
-            return isActive ;
-        } catch (SQLException ex) {
-            System.out.println("Invalod Email address");
-            //Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false; 
-    }
-    
-    public synchronized boolean checkPlaying(String player){
-
-        boolean available;
-        ResultSet result;
-        PreparedStatement pstCheckAv;
-        try {
-            pstCheckAv = con.prepareStatement("select * from player where username = ?");
-            pstCheckAv.setString(1, player);
-            result = pstCheckAv.executeQuery();
-            result.next();
-            available = result.getBoolean(4);
-            return true;
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-    
-    public synchronized String getData(PlayerDTO player){
-        String email;
-        ResultSet result;
-        PreparedStatement pstCheck;
-        try {
-            pstCheck = con.prepareStatement("select * from player where email = ?");
-            pstCheck.setString(1, player.getUsername());
-            result = pstCheck.executeQuery();
-            result.next();
-            email = result.getString(3);
-            return email;
-        } catch (SQLException ex) {
-            System.out.println("Invalod Email address");
-            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    
-    
-    public synchronized void updateResultSet(){
-    
-        try {
-            this.pst= con.prepareStatement("SELECT * FROM PLAYER",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            this.rs=pst.executeQuery();
-        } catch (SQLException ex) {
-           ex.printStackTrace();
-        }
- 
-    }
-    
-    public synchronized int countOfflineUsers(){
-    
-        try {
-            this.pst=con.prepareStatement("SELECT COUNT(*) FROM PLAYER WHERE ISONLINE = false",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            ResultSet result=pst.executeQuery();
-            return result.next() ? result.getInt(1):result.getInt(-1);
-        } catch (SQLException ex) {
-             ex.printStackTrace();
-        }
-        return -1;
-    }
-    
-    public synchronized void setOnline(PlayerDTO player){
-    
-        try {
-            pst=con.prepareStatement("UPDATE PLAYER SET ISONLINE = ? WHERE EMAIL = ?");
-            pst.setString(1,"true");
-            pst.setString(2, player.getEmail());
-            System.out.println("email:"+player.getEmail()+"is online now");
-            pst.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    
-    public synchronized void setNotAvalible(PlayerDTO player){
-      
-        try {
-            pst=con.prepareStatement("UPDATE PLAYER SET AVALIBLE = false WHERE EMAIL = ?");
-            pst.setString(1,player.getEmail());
-            pst.executeUpdate();
-            updateResultSet();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    
-    }
-    
-    
-    public synchronized ResultSet  getOnlinePlayers(){
-    
-        try {
-            this.pst=con.prepareStatement("SELECT * FROM PLAYER WHERE ISONLINE =TRUE",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            return pst.executeQuery();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-    
-    public synchronized String checkRegister(PlayerDTO player){
+     public synchronized String checkRegister(PlayerDTO player){
         ResultSet checkRs;
         PreparedStatement pstCheck;
         
@@ -307,6 +115,212 @@ public class DataAccessLayer {
               
     }
     
+    
+    
+                //update user state to not online
+    public synchronized void changeToOffline(PlayerDTO player){
+        try {
+           
+            pst = con.prepareStatement("update player set ISONLINE = false where email = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player.getEmail()); //not online
+            pst.executeUpdate(); 
+            updateResultSet();
+            } catch (SQLException ex) {
+            System.out.println("Changed user status to offline");
+            System.out.println(ex);
+            }
+    }
+
+        public synchronized void setOnline(PlayerDTO player){ //logged in and online now
+    
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET ISONLINE = ? WHERE EMAIL = ?");
+            pst.setString(1,"true");
+            pst.setString(2, player.getEmail());
+            System.out.println("email:"+player.getEmail()+"is online now");
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+       
+   
+ 
+    public synchronized String getUserName(PlayerDTO player){
+        String userName;
+        ResultSet result;
+        PreparedStatement pstCheck;
+        try {
+            pstCheck = con.prepareStatement("select * from player where email = ?");
+            pstCheck.setString(1,player.getEmail());
+            result = pstCheck.executeQuery();
+            result.next();
+            userName = result.getString(2);
+            return userName;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            
+        }
+        return null;
+    }
+        //the two players now are free to play
+    public synchronized void isNotPlaying(PlayerDTO player1, PlayerDTO player2){
+        try {
+            pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player1.getEmail());
+            pst.executeUpdate(); 
+            pst = con.prepareStatement("update player set avalible = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player2.getEmail());
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+    }
+    
+            //the two players now are free to play
+    public synchronized void isPlaying(PlayerDTO player1, PlayerDTO player2){
+        try {
+            pst = con.prepareStatement("update player set avalible = false  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player1.getEmail());
+            pst.executeUpdate(); 
+            pst = con.prepareStatement("update player set avalible = false  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            pst.setString(1, player2.getEmail());
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+    }
+    
+    public Boolean checkIsOnline(PlayerDTO player){
+        ResultSet checkRs;
+        PreparedStatement pstCheck;
+        String email =player.getEmail();
+        Boolean isOnline ;
+        try {
+            pstCheck = con.prepareStatement("select isonline from player where email = ?");
+            pstCheck.setString(1,email);
+            checkRs = pstCheck.executeQuery();
+            checkRs.next();
+            
+            isOnline = checkRs.getBoolean("isOnline");
+            
+            return isOnline;
+        } catch (SQLException ex) {
+            
+            System.out.println(ex);
+        }
+        return false; 
+    }
+    
+    public synchronized boolean checkPlaying(PlayerDTO player){
+
+        boolean available;
+        ResultSet result;
+        PreparedStatement pstCheckAv;
+        String email =player.getEmail();
+        try {
+            pstCheckAv = con.prepareStatement("select * from player where username = ?");
+            pstCheckAv.setString(1, email);
+            result = pstCheckAv.executeQuery();
+            result.next();
+            available = result.getBoolean(4);
+            return true;
+        } catch (SQLException ex) {
+              System.out.println(ex);
+
+        }
+        return false;
+    }
+    
+    public synchronized String getData(PlayerDTO player){
+        String email;
+        ResultSet result;
+        PreparedStatement pstCheck;
+        try {
+            pstCheck = con.prepareStatement("select * from player where email = ?");
+            pstCheck.setString(1, player.getUsername());
+            result = pstCheck.executeQuery();
+            result.next();
+            email = result.getString(3);
+            return email;
+        } catch (SQLException ex) {
+            System.out.println("Invalod Email address");
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    
+    
+    public synchronized void updateResultSet(){
+    
+        try {
+            this.pst= con.prepareStatement("SELECT * FROM PLAYER",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            this.rs=pst.executeQuery();
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+        }
+ 
+    }
+    
+    public synchronized int countOfflineUsers(){
+    
+        try {
+            this.pst=con.prepareStatement("SELECT COUNT(*) FROM PLAYER WHERE ISONLINE = false",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            ResultSet result=pst.executeQuery();
+            return result.next() ? result.getInt(1):result.getInt(-1);
+        } catch (SQLException ex) {
+             ex.printStackTrace();
+        }
+        return -1;
+    }
+    
+    
+    
+    public synchronized void setNotAvalible(PlayerDTO player){
+      
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET AVALIBLE = false WHERE EMAIL = ?");
+            pst.setString(1,player.getEmail());
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    
+    }
+        
+    public synchronized void setAvalible(PlayerDTO player){
+      
+        try {
+            pst=con.prepareStatement("UPDATE PLAYER SET AVALIBLE = true WHERE EMAIL = ?");
+            pst.setString(1,player.getEmail());
+            pst.executeUpdate();
+            updateResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    
+    }
+    
+    public synchronized ResultSet  getOnlinePlayers(){
+    
+        try {
+            this.pst=con.prepareStatement("SELECT * FROM PLAYER WHERE ISONLINE =TRUE",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            return pst.executeQuery();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+   
+    
      public synchronized int getScore(PlayerDTO player){
         int score;
         ResultSet checkRs;
@@ -337,5 +351,15 @@ public class DataAccessLayer {
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }   
+    }
+     public synchronized void disableConnection() throws SQLException{
+        changeToOffline( player); //need to be playerDTO player??////
+        setNotAvalible(player);
+
+        con.close();
+        rs.close();
+        pst.close();
+        databaseInstance = null;
+    }
+
 }

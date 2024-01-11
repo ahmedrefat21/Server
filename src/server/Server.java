@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * @author ahmed
  */
 public class Server extends Application {
-    
+     
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -25,7 +25,7 @@ public class Server extends Application {
         
         Parent root = new chartBase();
 
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument"));
+        
 
         
         Scene scene = new Scene(root);
@@ -40,5 +40,5 @@ public class Server extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
-}
+
+    }
