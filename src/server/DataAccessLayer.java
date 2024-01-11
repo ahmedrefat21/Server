@@ -103,13 +103,13 @@ public class DataAccessLayer {
     
 
 
-    public synchronized String getUserName(String email){
+    public synchronized String getUserName(PlayerDTO player){
         String userName;
         ResultSet result;
         PreparedStatement pstCheck;
         try {
             pstCheck = con.prepareStatement("select * from player where email = ?");
-            pstCheck.setString(1, email);
+            pstCheck.setString(1,player.getEmail());
             result = pstCheck.executeQuery();
             result.next();
             userName = result.getString(2);
@@ -135,13 +135,13 @@ public class DataAccessLayer {
         }
     }
     
-    public Boolean checkIsOnline(String email){
+    public Boolean checkIsOnline(PlayerDTO player){
         ResultSet checkRs;
         PreparedStatement pstCheck;
         Boolean isActive ;
         try {
             pstCheck = con.prepareStatement("select isonline from player where email = ?");
-            pstCheck.setString(1, email);
+            pstCheck.setString(1, player.getEmail());
             checkRs = pstCheck.executeQuery();
             checkRs.next();
             System.out.println("checkIsActive true ");
@@ -173,13 +173,13 @@ public class DataAccessLayer {
         return false;
     }
     
-    public synchronized String getData(String username){
+    public synchronized String getData(PlayerDTO player){
         String email;
         ResultSet result;
         PreparedStatement pstCheck;
         try {
             pstCheck = con.prepareStatement("select * from player where email = ?");
-            pstCheck.setString(1, username);
+            pstCheck.setString(1, player.getUsername());
             result = pstCheck.executeQuery();
             result.next();
             email = result.getString(3);
@@ -216,13 +216,13 @@ public class DataAccessLayer {
         return -1;
     }
     
-    public synchronized void setOnline(boolean state,String email){
+    public synchronized void setOnline(PlayerDTO player){
     
         try {
             pst=con.prepareStatement("UPDATE PLAYER SET ISONLINE = ? WHERE EMAIL = ?");
-            pst.setString(1,state+"");
-            pst.setString(2, email);
-            System.out.println("email:"+email+"is online now");
+            pst.setString(1,"true");
+            pst.setString(2, player.getEmail());
+            System.out.println("email:"+player.getEmail()+"is online now");
             pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -230,11 +230,11 @@ public class DataAccessLayer {
     }
     
     
-    public synchronized void setNotAvalible(String email){
+    public synchronized void setNotAvalible(PlayerDTO player){
       
         try {
             pst=con.prepareStatement("UPDATE PLAYER SET AVALIBLE = false WHERE EMAIL = ?");
-            pst.setString(1,email);
+            pst.setString(1,player.getEmail());
             pst.executeUpdate();
             updateResultSet();
         } catch (SQLException ex) {
@@ -275,19 +275,19 @@ public class DataAccessLayer {
         return "Registered Successfully";
     } 
     
-    public synchronized String checkSignIn(String email, String password){
+    public synchronized String checkSignIn(PlayerDTO player){
         ResultSet checkRs;
         PreparedStatement pstCheck;
         String check;  
-        System.out.println("checkSignIn " +checkIsOnline(email));
-        if(!checkIsOnline(email)){
-            System.out.println(" checkSignIn: " +checkIsOnline(email));
+        System.out.println("checkSignIn " +checkIsOnline(player.getEmail()));
+        if(!checkIsOnline(player.getEmail())){
+            System.out.println(" checkSignIn: " +checkIsOnline(player.getEmail()));
                 try { 
             pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ? ");
-            pstCheck.setString(1, email);
+            pstCheck.setString(1, player.getEmail());
             checkRs = pstCheck.executeQuery();
             if(checkRs.next()){
-                if(password.equals(checkRs.getString(4))){
+                if(player.getPassword().equals(checkRs.getString(4))){
                     return "Logged in successfully";
                 }
                 return "Password is incorrect";
