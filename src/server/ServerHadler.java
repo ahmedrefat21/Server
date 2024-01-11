@@ -119,18 +119,28 @@ public class ServerHadler {
         player.setOnline(isOnline);
         databaseInstance.setOnline(player);
     }
-        public void setAvalible(PlayerDTO player){
+        public void setOffline(PlayerDTO player){ //changing his status to offline
         String email=player.getEmail();
-        boolean available = true;
-         player.setAvailable(available);
-        databaseInstance.setAvalible(player);
+        boolean isOnline = false;
+        player.setOnline(isOnline);
+        databaseInstance.setOnline(player);
     }
-    public void setNotPlaying(PlayerDTO player){
+        public void setNotAvalible(PlayerDTO player){
+        String email=player.getEmail();
+//        boolean available = true;
+//         player.setAvailable(available);
+        databaseInstance.setNotAvalible(player);
+    }
+    public void setAvalible(PlayerDTO player){
         String email=player.getEmail();
         databaseInstance.setAvalible(player);
     }
       public void setPlaying(PlayerDTO player1,PlayerDTO player2){
         databaseInstance.isPlaying(player1, player2);
+    }
+      
+         public void setNotPlaying(PlayerDTO player1,PlayerDTO player2){
+        databaseInstance.isNotPlaying(player1, player2);
     }
         public int getScore(PlayerDTO player){
         String email=player.getEmail();
