@@ -30,6 +30,9 @@ public class PlayerDTO {
         this.ISONLINE = ISONLINE;
         this.Available = Available;
     }
+         public PlayerDTO(String email){
+         this.email=email;
+         }
 
     public String getUsername() {
         return Username;
