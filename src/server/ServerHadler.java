@@ -101,6 +101,11 @@ public class ServerHadler {
     public void getActivePlayersOne(){
         databaseInstance.getOnlinePlayers();
     }
-
+    public void setOnline(PlayerDTO player){ //changing his status to online
+        String email=player.getEmail();
+        boolean isOnline = true;
+        player.setOnline(isOnline);
+        databaseInstance.setOnline(player);
+    }
    
 }
