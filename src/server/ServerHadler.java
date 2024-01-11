@@ -93,5 +93,17 @@ public class ServerHadler {
     public void getActivePlayers1(){
         databaseInstance.getOnlinePlayers();
     }
+    public String checkSignIn(PlayerDTO player){
+        return databaseInstance.checkSignIn(player);
+    }
+    public int getScore(PlayerDTO player){
+        return databaseInstance.getScore(player);
+    }
+    public String getUserName(PlayerDTO player){
+        return databaseInstance.getUserName(player);
+    }
+    public void login(PlayerDTO player) throws SQLException{
+        databaseInstance.login( player);
+    }
     
 }

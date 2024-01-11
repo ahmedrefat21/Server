@@ -21,6 +21,8 @@ public class ConnectedPlayer {
      private PrintStream ps;
      private Socket currentSocket;
      private String clientData,query;
+     private String username,email;
+     private Boolean loggedin;
      private StringTokenizer token;
      private PlayerDTO player; 
      private DataAccessLayer databaseInstance;
@@ -106,5 +108,37 @@ public class ConnectedPlayer {
                 ps.println("already signed-up"+"###");
             }
        }
+    
+    private void signIn(){
+        email = token.nextToken();
+        String password = token.nextToken();
+        String check;
+        int score;
+        System.out.println(email+" "+password);
+        try{
+            check = server.checkSignIn(player);
+            if(check.equals("Logged in successfully")){
+                score = server.getScore(player);
+                username = server.getUserName(player);
+                server.login(player);
+                ps.println(check +"###" + score);
+                ps.println(username+"###"+email+"###"+score); // send data to registerController
+                loggedin = true;
+                activeUsers.add(this);
+            }else if(check.equals("This Email is alreay sign-in")){
+                System.out.println("alread in connected");
+                ps.println(check +"###");
+            }else if(check.equals("Email is incorrect")){
+                ps.println(check +"###");
+            }else if(check.equals("Password is incorrect")){
+                ps.println(check +"###");
+            }else if(check.equals("Connection issue, please try again later")){
+                ps.println(check +"###");
+            }
+        }catch(SQLException ex){
+            System.out.println("Connection Issues");
+        }
+        token = null;
+   }
     
 }
