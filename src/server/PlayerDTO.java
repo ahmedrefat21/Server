@@ -30,6 +30,9 @@ public class PlayerDTO {
         this.isOnline = isOnline;
         this.available = available;
     }
+         public PlayerDTO(String email){
+         this.email=email;
+         }
 
     public String getUsername() {
         return userName;

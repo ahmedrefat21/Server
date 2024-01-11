@@ -21,8 +21,12 @@ public class Server extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+
         
         Parent root = new chartBase();
+
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument"));
+
         
         Scene scene = new Scene(root);
         
