@@ -10,44 +10,44 @@ package server;
  * @author Kimo Store
 */
 public class PlayerDTO {
-    private String Username;
-    private String Password;
+    private String userName;
+    private String password;
     private String email;
-    private int Points;
-    private boolean ISONLINE;
-    private boolean Available;
+    private int points;
+    private boolean isOnline;
+    private boolean available;
 
-    public PlayerDTO(String Username, String Password, int Points, boolean Online, boolean Available) {
-        this.Username = Username;
-        this.Password = Password;
-        this.Points = Points;
-        this.ISONLINE = ISONLINE;
-        this.Available = Available;
+    public PlayerDTO(String userName, String password, int points, boolean isOnline, boolean available) {
+        this.userName = userName;
+        this.password = password;
+        this.points = points;
+        this.isOnline = isOnline;
+        this.available = available;
     }
     
-        public PlayerDTO(String Username, boolean Online, boolean Available) {
-        this.Username = Username;
-        this.ISONLINE = ISONLINE;
-        this.Available = Available;
+        public PlayerDTO(String userName, boolean isOnline, boolean available) {
+        this.userName = userName;
+        this.isOnline = isOnline;
+        this.available = available;
     }
          public PlayerDTO(String email){
          this.email=email;
          }
 
     public String getUsername() {
-        return Username;
+        return userName;
     }
 
-    public void setUsername(String Username) {
-        this.Username = Username;
+    public void setUsername(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
-    public void setPassword(String Password) {
-        this.Password = Password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
         public String getEmail() {
@@ -60,27 +60,27 @@ public class PlayerDTO {
     
     
     public int getPoints() {
-        return Points;
+        return points;
     }
 
     public void setPoints(int Points) {
-        this.Points = Points;
+        this.points = Points;
     }
 
     public boolean isOnline() {
-        return ISONLINE;
+        return isOnline;
     }
 
-    public void setOnline(boolean Online) {
-        this.ISONLINE = ISONLINE;
+    public void setOnline(boolean isOnline) {
+        this.isOnline = isOnline;
     }
 
     public boolean isAvailable() {
-        return Available;
+        return available;
     }
 
-    public void setAvailable(boolean Available) {
-        this.Available = Available;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
         
 }
