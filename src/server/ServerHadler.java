@@ -114,6 +114,7 @@ public class ServerHadler {
     public void getActivePlayersOne(){
         databaseInstance.getOnlinePlayers();
     }
+
     public void setOnline(PlayerDTO player){ //changing his status to online
         String email=player.getEmail();
         boolean isOnline = true;
@@ -153,4 +154,19 @@ public class ServerHadler {
          int score=player.getPoints();
         databaseInstance.updateScore(player);
     }
+
+    public String checkSignIn(PlayerDTO player){
+        return databaseInstance.checkSignIn(player);
+    }
+    public int getScore(PlayerDTO player){
+        return databaseInstance.getScore(player);
+    }
+    public String getUserName(PlayerDTO player){
+        return databaseInstance.getUserName(player);
+    }
+    public void login(PlayerDTO player) throws SQLException{
+        databaseInstance.login( player);
+    }
+    
+
 }
