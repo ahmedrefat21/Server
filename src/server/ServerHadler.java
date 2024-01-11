@@ -21,6 +21,7 @@ public class ServerHadler {
     private ServerSocket serverSocket ;
     private Socket socket ;
     private Thread listener;
+    PlayerDTO player;
 
     
     private ServerHadler(){
@@ -35,9 +36,9 @@ public class ServerHadler {
     }
     public void enableConnections() throws SQLException{
 
-        databaseInstance = DataAccessLayer.startDataBase();
-      //  databaseInstance.changeStateToOffline();
-      //  databaseInstance.changeStateToNotPlaying();
+       databaseInstance = DataAccessLayer.startDataBase();
+       databaseInstance.changeToOffline(player);
+       databaseInstance.setAvalible(player);
        databaseInstance.updateResultSet();
         enableSocketServer(); 
 
@@ -123,7 +124,7 @@ public class ServerHadler {
         String email=player.getEmail();
         boolean isOnline = false;
         player.setOnline(isOnline);
-        databaseInstance.setOnline(player);
+        databaseInstance.changeToOffline(player);
     }
         public void setNotAvalible(PlayerDTO player){
         String email=player.getEmail();
