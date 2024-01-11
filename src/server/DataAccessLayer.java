@@ -20,10 +20,11 @@ import org.apache.derby.jdbc.ClientDriver;
  */
 public class DataAccessLayer {
     
-    private static DataAccessLayer DataRefaerence;
+    private static DataAccessLayer databaseInstance;
     private Connection con;
     private ResultSet rs ;
     private PreparedStatement pst;
+    private PlayerDTO player;
     
     public synchronized ResultSet getResultSet(){
         return rs;
@@ -35,10 +36,10 @@ public class DataAccessLayer {
     }
 
     public synchronized static DataAccessLayer startDataBase() throws SQLException {
-        if(DataRefaerence == null){
-            DataRefaerence = new DataAccessLayer();
+        if(databaseInstance == null){
+            databaseInstance= new DataAccessLayer();
         }
-        return DataRefaerence;
+        return databaseInstance;
     }
     public synchronized void login(PlayerDTO player) throws SQLException{
                 //take email and password
@@ -95,7 +96,7 @@ public class DataAccessLayer {
         con.close();
         rs.close();
         pst.close();
-        DataRefaerence = null;
+        databaseInstance = null;
     }
 
         
@@ -138,10 +139,11 @@ public class DataAccessLayer {
     public Boolean checkIsOnline(PlayerDTO player){
         ResultSet checkRs;
         PreparedStatement pstCheck;
+        String email =player.getEmail();
         Boolean isActive ;
         try {
             pstCheck = con.prepareStatement("select isonline from player where email = ?");
-            pstCheck.setString(1, player.getEmail());
+            pstCheck.setString(1,email);
             checkRs = pstCheck.executeQuery();
             checkRs.next();
             System.out.println("checkIsActive true ");
@@ -255,15 +257,15 @@ public class DataAccessLayer {
         return null;
     }
     
-    public synchronized String checkRegister(String username , String email){
+    public synchronized String checkRegister(PlayerDTO player){
         ResultSet checkRs;
         PreparedStatement pstCheck;
         
         try {
             String queryString= new String("select USERNAME from PLAYER where USERNAME = ?");
             pstCheck = con.prepareStatement("select * from PLAYER where USERNAME = ? and EMAIL = ?");
-            pstCheck.setString(1, username);
-            pstCheck.setString(2, email);
+            pstCheck.setString(1, player.getUsername());
+            pstCheck.setString(2, player.getEmail());
             checkRs = pstCheck.executeQuery();
             if(checkRs.next()){
                 return "already signed-up";
@@ -279,12 +281,13 @@ public class DataAccessLayer {
         ResultSet checkRs;
         PreparedStatement pstCheck;
         String check;  
-        System.out.println("checkSignIn " +checkIsOnline(player.getEmail()));
-        if(!checkIsOnline(player.getEmail())){
-            System.out.println(" checkSignIn: " +checkIsOnline(player.getEmail()));
+        String email =player.getEmail();
+        System.out.println("checkSignIn " +checkIsOnline(player));
+        if(!checkIsOnline(player)){
+            System.out.println(" checkSignIn: " +checkIsOnline(player));
                 try { 
             pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ? ");
-            pstCheck.setString(1, player.getEmail());
+            pstCheck.setString(1, email);
             checkRs = pstCheck.executeQuery();
             if(checkRs.next()){
                 if(player.getPassword().equals(checkRs.getString(4))){
@@ -298,16 +301,17 @@ public class DataAccessLayer {
             return "Connection issue, please try again later";
              }
         }else{
-            System.out.println("This Email alreay sign-in " + checkIsOnline(email));
+            System.out.println("This Email alreay sign-in " + checkIsOnline(player));
            return "This Email is alreay sign-in";  
         }
               
     }
     
-     public synchronized int getScore(String email){
+     public synchronized int getScore(PlayerDTO player){
         int score;
         ResultSet checkRs;
         PreparedStatement pstCheck;
+        String email=player.getEmail();
  
         try {
             pstCheck = con.prepareStatement("select * from PLAYER where EMAIL = ?");
@@ -321,11 +325,13 @@ public class DataAccessLayer {
         }
         return -1;
     } 
-    public synchronized void updateScore(String mail, int score){
+    public synchronized void updateScore(PlayerDTO player){
+        int score =player.getPoints();
+        String email =player.getEmail();
         try {
             pst = con.prepareStatement("update PLAYER set SCORE = ?  where EMAIL = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
             pst.setInt(1, score);
-            pst.setString(2, mail);
+            pst.setString(2, email);
             pst.executeUpdate();
             updateResultSet();
         } catch (SQLException ex) {

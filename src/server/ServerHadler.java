@@ -39,7 +39,7 @@ public class ServerHadler {
       //  databaseInstance.changeStateToOffline();
       //  databaseInstance.changeStateToNotPlaying();
        databaseInstance.updateResultSet();
-        initServer(); // enable socket server
+        enableSocketServer(); 
 
     }
     
@@ -56,16 +56,15 @@ public class ServerHadler {
         }
     }
     
-    private void initServer(){
+    private void enableSocketServer(){
         try {
             serverSocket = new ServerSocket(5005);
             listener = new Thread(() -> {
                 while(true){
                     try {
                         socket = serverSocket.accept();
-          //              new ConnectedPlayer(socket); // not mandatory to be online
+                       new ConnectedPlayer(socket); // not mandatory to be online
                     }catch (IOException ex) {
-            //            Logger.getLogger(ServerMainPageController.class.getName()).log(Level.SEVERE, null, ex);
                       ex.printStackTrace();
                     }
                     
@@ -78,12 +77,21 @@ public class ServerHadler {
         }
     }
     public String checkRegister(PlayerDTO player){
-        return databaseInstance.checkRegister(player.getUsername(), player.getEmail());
+     String Username=player.getUsername();
+      String email=player.getEmail();
+        return databaseInstance.checkRegister(player);
     }
     public void SignUp(PlayerDTO player) throws SQLException{
-        databaseInstance.SignUp(player.getUsername(),player.getEmail(),player.getPassword());
+       String Username=player.getUsername();
+       String email=player.getEmail();
+       String Password =player.getPassword();
+        databaseInstance.SignUp(player);
     }
     public ResultSet getResultSet(){
         return databaseInstance.getResultSet();
     }
+    public void getActivePlayers1(){
+        databaseInstance.getOnlinePlayers();
+    }
+    
 }
