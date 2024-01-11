@@ -48,7 +48,7 @@ public class DataAccessLayer {
         pst.setString(3, player.getPassword());
         pst.executeUpdate(); 
         updateResultSet();    
-       
+      // System.out.println(player.getEmail()); testing 
     }
     //username ,email, pass
     public synchronized void SignUp(PlayerDTO player) throws SQLException{
