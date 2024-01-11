@@ -77,17 +77,26 @@ public class ServerHadler {
         }
     }
     
-    public void login(PlayerDTO player) throws SQLException{
-            String email=player.getEmail();
-            String password=player.getPassword();
-        databaseInstance.login(player);
+ 
+  
+    
+    public String getUserName(PlayerDTO player){
+         String email=player.getEmail();
+        return databaseInstance.getUserName(player);
     }
 
-       
     public String checkRegister(PlayerDTO player){
      String Username=player.getUsername();
       String email=player.getEmail();
         return databaseInstance.checkRegister(player);
+    }
+        public void login(PlayerDTO player) throws SQLException{
+            String email=player.getEmail();
+            String password=player.getPassword();
+        databaseInstance.login(player);
+    }
+        public String checkSignIn(PlayerDTO player){
+        return databaseInstance.checkSignIn(player);
     }
     public void SignUp(PlayerDTO player) throws SQLException{
        String Username=player.getUsername();
@@ -98,6 +107,9 @@ public class ServerHadler {
     public ResultSet getResultSet(){
         return databaseInstance.getResultSet();
     }
+        public ResultSet getActivePlayers(){
+        return databaseInstance.getOnlinePlayers();
+    }
     public void getActivePlayersOne(){
         databaseInstance.getOnlinePlayers();
     }
@@ -107,5 +119,27 @@ public class ServerHadler {
         player.setOnline(isOnline);
         databaseInstance.setOnline(player);
     }
-   
+        public void setAvalible(PlayerDTO player){
+        String email=player.getEmail();
+        boolean available = true;
+         player.setAvailable(available);
+        databaseInstance.setAvalible(player);
+    }
+    public void setNotPlaying(PlayerDTO player){
+        String email=player.getEmail();
+        databaseInstance.setAvalible(player);
+    }
+      public void setPlaying(PlayerDTO player1,PlayerDTO player2){
+        databaseInstance.isPlaying(player1, player2);
+    }
+        public int getScore(PlayerDTO player){
+        String email=player.getEmail();
+        return databaseInstance.getScore(player);
+    }
+        
+         public void updateScore(PlayerDTO player){
+         String email=player.getEmail();
+         int score=player.getPoints();
+        databaseInstance.updateScore(player);
+    }
 }
