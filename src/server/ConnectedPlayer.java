@@ -83,7 +83,7 @@ public class ConnectedPlayer {
        if(currentSocket.isClosed()){
             System.out.println("3");
             System.out.println("close");
-            server.getActivePlayers1();
+            server.getActivePlayers();
         }
       
       
