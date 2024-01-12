@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  
 public class ConnectedPlayer {
      private ResultSet result;
-     private ServerHadler server;
+     private Server server;
      private DataInputStream dis;
      private PrintStream ps;
      private Socket currentSocket;
