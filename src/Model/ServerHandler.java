@@ -25,6 +25,12 @@ public class ServerHandler {
             ex.printStackTrace();
         }
     }
+    
+    
+    
+    public void setNotBusy(String email){
+        database.setNotBusy(email);
+    }
 }
 
 
