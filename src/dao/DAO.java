@@ -91,7 +91,21 @@ public class DAO {
     
     
     
-    
+    public synchronized String getUserName(String email){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps= connection.prepareStatement("select * from player where email = ?");
+            ps.setString(1, email);
+            result = ps.executeQuery();
+            result.next();
+            String userName = result.getString(2);
+            return userName;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
     
 }
 
