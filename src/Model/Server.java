@@ -19,12 +19,23 @@ public class Server extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Screens/FXML.fxml"));
         
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
         stage.show();
+        
+//        Parent root = FXMLLoader.load(getClass().getResource("/Screens/ServerMainPage.fxml"));
+//        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.setTitle("Server");
+//        Image icon = new Image(getClass().getResourceAsStream("/assets/icon.png"));
+//        stage.getIcons().add(icon);
+//        stage.show();
+//        stage.setOnCloseRequest((event) -> {
+//            System.exit(1);
+//        });
     }
 
     /**

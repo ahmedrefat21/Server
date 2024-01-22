@@ -3,6 +3,7 @@ package Controller;
 
 import Model.Server;
 import Model.ServerHandler;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,7 +73,7 @@ public class ServerMainPageController implements Initializable {
         }
 
       @FXML
-         private void shutDown(ActionEvent event) throws InterruptedException{
+         private void shutDown(ActionEvent event) throws InterruptedException, IOException{
         
         serverState = !serverState;
         if(!serverState) 

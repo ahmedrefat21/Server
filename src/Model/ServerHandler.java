@@ -56,7 +56,10 @@ public class ServerHandler {
             database.disConnection();
             thread.stop();
             serverSocket.close();
+        }catch(IOException ex) {
+            ex.printStackTrace();
         }
+    }
     
 
     

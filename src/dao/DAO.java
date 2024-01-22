@@ -329,6 +329,19 @@ public class DAO {
         }
         return -1;
     }
+        
+        public synchronized void disConnection() {
+        try {
+            changeToOffline();
+            changeToNotBusy();
+            result.close();
+            pst.close();
+            connection.close();
+            db = null;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
 
 
