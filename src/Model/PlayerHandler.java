@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package Model;
 
 /**
  *
  * @author ahmed
  */
-public class DataBase {
+public class PlayerHandler {
     
 }
