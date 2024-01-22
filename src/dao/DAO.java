@@ -107,6 +107,26 @@ public class DAO {
         return null;
     }
     
+    
+    
+    
+    
+    public synchronized boolean checkBusy(String player){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps= connection.prepareStatement("select * from player where username = ?");
+            ps.setString(1, player);
+            result = ps.executeQuery();
+            result.next();
+            boolean available = result.getBoolean(4);
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+
+    }
 }
 
 
