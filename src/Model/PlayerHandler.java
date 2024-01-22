@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,7 @@ public class PlayerHandler {
    private String password;
    private StringTokenizer token;
    static ArrayList<PlayerHandler> activeUsers = new ArrayList(); 
+    static HashMap<String,PlayerHandler> game = new HashMap();
     
     
     
