@@ -51,13 +51,11 @@ public class ServerHandler {
     
     
    
-    public void endConnections(){
+    public void endConnections() throws IOException{
         try {
             database.disConnection();
             thread.stop();
             serverSocket.close();
-
-
         }
     
 
@@ -86,6 +84,7 @@ public class ServerHandler {
     
     public void setNotBusy(String email){
         database.setNotBusy(email);
+    }
     
         
         
@@ -104,7 +103,7 @@ public class ServerHandler {
         
         
         
-        public void updateScore(String mail,int score){
+    public void updateScore(String mail,int score){
         database.updateScore(mail, score);
     }
 
@@ -122,6 +121,14 @@ public class ServerHandler {
     
     public void login(String email,String password) throws SQLException{
         database.login(email, password);
+    }
+    
+    public void makeBusy(String player1,String player2){
+        database.make2PlayersBusy(player1, player2);
+    }
+    
+    public ResultSet getResultSet(){
+        return database.getResultSet();
     }
     
     public void getOnlinePlayers(){

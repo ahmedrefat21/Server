@@ -1,4 +1,3 @@
-
 package dao;
 
 
@@ -22,16 +21,12 @@ public class DAO {
     public synchronized ResultSet getResultSet(){
         return result;
     }
-    
-    
+       
     private  DAO() throws SQLException{
          DriverManager.registerDriver(new ClientDriver());
          connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToe","root","root");
     }
-
-    
-    
-    
+  
     public synchronized void ResultSet(){
         try {
             DriverManager.registerDriver(new ClientDriver());
@@ -42,17 +37,7 @@ public class DAO {
             ex.printStackTrace();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     public synchronized void setNotBusy (String email){
         try {
             DriverManager.registerDriver(new ClientDriver());
@@ -65,10 +50,7 @@ public class DAO {
             ex.printStackTrace();
         }
     }
-    
-    
-    
-    
+   
     public synchronized void SignUp(String username , String email, String password) throws SQLException{
         DriverManager.registerDriver(new ClientDriver());
         connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
@@ -79,8 +61,7 @@ public class DAO {
         ps.executeUpdate(); 
         login(email,password);
     }
-    
-    
+     
     public synchronized String checkIsalreadysignedup(String username, String email) {
         try {
             DriverManager.registerDriver(new ClientDriver());
@@ -113,7 +94,6 @@ public class DAO {
         }
         return -1;
     } 
-    
     
     public synchronized String checkisalreadyloginIn(String email, String password){
         if(!checkIsOnline(email)){
@@ -165,7 +145,6 @@ public class DAO {
         ResultSet();          
     }
     
-    
     public synchronized void  setOnline(boolean state , String email){
         try {
             DriverManager.registerDriver(new ClientDriver());
@@ -180,10 +159,7 @@ public class DAO {
             ex.printStackTrace();
         }
     }
-    
-
-    
-    
+   
     public synchronized String getUserName(String email){
         try {
             DriverManager.registerDriver(new ClientDriver());
@@ -246,10 +222,8 @@ public class DAO {
         }
         return false;
     }
-    
-    
-    
-   public synchronized void changeToNotBusy(){
+   
+    public synchronized void changeToNotBusy(){
          try {
             DriverManager.registerDriver(new ClientDriver());
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
@@ -261,8 +235,7 @@ public class DAO {
             ex.printStackTrace();
         }
     }
-    
-    
+     
     public synchronized void changeToOffline(){
         try {
             DriverManager.registerDriver(new ClientDriver());
@@ -276,7 +249,6 @@ public class DAO {
         }
         
     }
-    
     
     public synchronized void make2PlayersBusy(String player1, String player2){
         try {
@@ -293,7 +265,6 @@ public class DAO {
             ex.printStackTrace();
         }
     }
-    
     
     public synchronized static DAO getDataBase() throws SQLException {
         if(db == null){

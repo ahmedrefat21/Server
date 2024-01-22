@@ -73,12 +73,8 @@ public class PlayerHandler extends Thread implements Initializable {
         result = server.getResultSet();
     }
     
-    
-    
-    
-    
-    
-    public void run(){
+  
+  public void run(){
         while(mySocket.isConnected()){
             try {
                 playerData = dis.readLine();
@@ -89,9 +85,36 @@ public class PlayerHandler extends Thread implements Initializable {
                         case "SignIn":
                             login();
                             break;
+                        case "SignUp":
+                            signUp();
+                            break;
                         case "playerlist":
                             OnlinePlayerList();
-                            break;               
+                            break;
+                        case "request":
+                            sendInvitation();
+                            break;
+                        case "accept":
+                            acceptGame();
+                            break;
+                        case "decline":
+                            refuseGame();
+                            break;
+                        case "withdraw":
+                            withdraw();
+                            break;
+                        case "gameTic":
+                            myMove();
+                            break;
+                        case "finishgameTic":
+                            oppositeMove();
+                            break;
+                        case "updateScore":
+                            updateScore();
+                            break;
+                        case "available":
+                            restate();
+                            break;
                         case "logout":
                             logout();
                             break;
@@ -100,7 +123,7 @@ public class PlayerHandler extends Thread implements Initializable {
                     }
                }
             } catch (IOException ex) {
-                
+                withdraw();
 
                 if(email != null){
                     server.setOnline(false,email);
@@ -108,7 +131,6 @@ public class PlayerHandler extends Thread implements Initializable {
                     activeUsers.remove(this);   
 
                 }else{
-                   
                    refreshList = true;
                  }
                 try {
