@@ -14,6 +14,21 @@ import org.apache.derby.jdbc.ClientDriver;
 
 public class DAO {
     
+    private static DAO db;
+    private Connection connection;
+    private ResultSet result ;
+    private PreparedStatement pst;
+    
+    public synchronized ResultSet getResultSet(){
+        return result;
+    }
+    
+    private  DAO() throws SQLException{
+         DriverManager.registerDriver(new ClientDriver());
+         connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToe","root","root");
+    }
+
+    
     
     
     
@@ -74,41 +89,6 @@ public class DAO {
         }
         return "Registered Successfully";
     }
-    
-    
-    
-    
-    
-    public synchronized void updateScore(String mail, int score){
-        try {
-            DriverManager.registerDriver(new ClientDriver());
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
-            PreparedStatement ps = connection.prepareStatement("update player set score = ?  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
-            ps.setInt(1, score);
-            ps.setString(2, mail);
-            ps.executeUpdate();
-
-/**
- *
- * @author ahmed
- */
-public class DAO {
-    
-    private static DAO db;
-    private Connection connection;
-    private ResultSet result ;
-    private PreparedStatement pst;
-    
-    public synchronized ResultSet getResultSet(){
-        return result;
-    }
-    
-    private  DAO() throws SQLException{
-         DriverManager.registerDriver(new ClientDriver());
-         connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToe","root","root");
-    }
-    
-    
     
     public synchronized int retriveScore(String email){
         try {
@@ -212,30 +192,11 @@ public class DAO {
         return null;
     }
     
-    
-    
-    
-    
-    public synchronized boolean checkBusy(String player){
-
     public synchronized String getEmail(String username){
-
         try {
             DriverManager.registerDriver(new ClientDriver());
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
             PreparedStatement ps= connection.prepareStatement("select * from player where username = ?");
-
-            ps.setString(1, player);
-            result = ps.executeQuery();
-            result.next();
-            boolean available = result.getBoolean(4);
-            return true;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return false;
-
-
             ps.setString(1, username);
             result = ps.executeQuery();
             result.next();
@@ -245,8 +206,48 @@ public class DAO {
             ex.printStackTrace();
         }
         return null;
-
+        
     }
+    
+    public synchronized void updateScore(String mail, int score){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("update player set score = ?  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            ps.setInt(1, score);
+            ps.setString(2, mail);
+            ps.executeUpdate();
+            ResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public synchronized boolean checkBusy(String player){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps= connection.prepareStatement("select * from player where username = ?");
+            ps.setString(1, player);
+            result = ps.executeQuery();
+            result.next();
+            boolean available = result.getBoolean(4);
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 
