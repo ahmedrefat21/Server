@@ -88,5 +88,16 @@ public class DAO {
          }
          return false;
          
-     }
+    }
+    
+    public synchronized void login(String email,String password) throws SQLException{
+        DriverManager.registerDriver(new ClientDriver());
+        connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+        PreparedStatement ps = connection.prepareStatement("update player set isActive = ?  where email = ? and password = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+        ps.setString(1, "true");
+        ps.setString(2, email);
+        ps.setString(3, password);
+        ps.executeUpdate(); 
+        ResultSet();          
+    }
 }
