@@ -46,6 +46,12 @@ public class ServerHandler {
         public String checkSignUp(String username,String email){
         return database.checkIsalreadysignedup(username, email);
     }
+        
+        
+        
+        public void updateScore(String mail,int score){
+        database.updateScore(mail, score);
+    }
 }
 
 
