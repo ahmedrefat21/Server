@@ -74,7 +74,13 @@ public class PlayerHandler {
         }
    }
      
-     
+     private void myMove(){
+       String mail = token.nextToken();
+       String button = token.nextToken();  
+       PlayerHandler p = game.get(mail);
+       p.ps.println("gameTic");
+       p.ps.println(button);
+    } 
      
      
 }
