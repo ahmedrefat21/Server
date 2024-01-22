@@ -5,44 +5,31 @@
  */
 package Model;
 
-
+import dao.DAO;
+import Controller.ServerMainPageController;
 import java.io.IOException;
 import java.sql.SQLException;
-
-import dao.DAO;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-/**
- *
- * @author ahmed
- */
 public class ServerHandler {
-    
-
-    
-    
-    
-    public void endConnections(){
-        try {
-            database.disConnection();
-            thread.stop();
-            serverSocket.close();
-
     private static ServerHandler server;
     public DAO database ;
     private ServerSocket serverSocket ;
     private Socket socket ;
     private Thread thread;
-
-    
-    private ServerHandler(){}
+  
+  
+  private ServerHandler(){}
     
     public static ServerHandler getServer(){
         if(server == null){
@@ -51,6 +38,29 @@ public class ServerHandler {
         return server;
     }
     
+   
+  public void startConnections() throws SQLException{
+        
+        database = DAO.getDataBase();
+        database.changeToOffline();
+        database.changeToNotBusy();
+        database.ResultSet();
+        
+        startServer(); 
+    }   
+    
+    
+   
+    public void endConnections(){
+        try {
+            database.disConnection();
+            thread.stop();
+            serverSocket.close();
+
+
+        }
+    
+
     
     private void startServer(){
         try {
@@ -114,7 +124,20 @@ public class ServerHandler {
         database.login(email, password);
     }
     
+    public void getOnlinePlayers(){
+        database.getOnlinePlayers();
+    } 
+    public ResultSet getActivePlayers(){
+        return database.getOnlinePlayers();
+    }
+    public ResultSet getActivePlayersChart(){
+        return database.getActivePlayersChart();
+    }
     
+    public ResultSet getOfflinePlayers(){
+        return database.getOfflinePlayers();
+    }
+
     
 
 }
