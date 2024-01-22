@@ -3,6 +3,7 @@ package dao;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.apache.derby.jdbc.ClientDriver;
 
@@ -69,6 +70,28 @@ public class DAO {
         }
         return "Registered Successfully";
     }
+    
+    
+    
+    
+    
+    public synchronized void updateScore(String mail, int score){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("update player set score = ?  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            ps.setInt(1, score);
+            ps.setString(2, mail);
+            ps.executeUpdate();
+            ResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+    
+    
     
 }
 
