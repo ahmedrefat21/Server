@@ -263,7 +263,19 @@ public class DAO {
     }
     
     
-    
+    public synchronized void changeToOffline(){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("update player set isActive = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            ps.setString(1, "false");
+            ps.executeUpdate(); 
+            ResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
     
 }
 
