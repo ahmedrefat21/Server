@@ -53,7 +53,22 @@ public class DAO {
     }
     
     
-    
+    public synchronized String checkIsalreadysignedup(String username, String email) {
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement pst = connection.prepareStatement("select * from player where username = ? and email = ?");
+            pst.setString(1, username);
+            pst.setString(2, email);
+            result = pst.executeQuery();
+            if (result.next()) {
+                return "signed-up before";
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return "Registered Successfully";
+    }
     
 }
 
