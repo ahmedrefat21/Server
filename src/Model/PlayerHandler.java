@@ -297,6 +297,15 @@ public class PlayerHandler extends Thread implements Initializable {
             game.remove(player.email);
         }
     } 
-
     
+    private void refuseGame(){
+            System.out.println("refused");
+            String OpponentMail = token.nextToken();
+            for(PlayerHandler player : activeUsers){
+                if(player.email.equals(OpponentMail)){
+                    player.ps.println("decline");
+                }
+            }
+        }
+
 }
