@@ -135,7 +135,13 @@ public class ServerMainPageController implements Initializable {
          barChart.getData().setAll(series); 
         }
 
-         
+            
+    private void stopChart() {
+     barChart.getData().clear();
+     CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
+     xAxis.setCategories(FXCollections.emptyObservableList());
+     }
+    
          
          
     @FXML
