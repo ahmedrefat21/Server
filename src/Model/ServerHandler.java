@@ -37,6 +37,9 @@ public class ServerHandler {
    public void getOnlinePlayers(){
         database.getOnlinePlayers();
     } 
+    public ResultSet getActivePlayers(){
+        return database.getOnlinePlayers();
+    }
 
     
     
