@@ -55,7 +55,9 @@ public class ServerHandler {
         }
     }
     
-    
+    public String checkIslogin(String email,String password){
+        return database.checkisalreadyloginIn(email, password);
+    }
     
      public void setOnline(Boolean state, String mail){
         database.setOnline(false,mail);
