@@ -9,6 +9,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,8 +20,10 @@ import java.util.logging.Logger;
  * @author ahmed
  */
 public class PlayerHandler {
-    
-    
+    private String username,email;
+   private String password;
+   private StringTokenizer token;
+   static ArrayList<PlayerHandler> activeUsers = new ArrayList(); 
     
     
     
@@ -41,4 +46,12 @@ public class PlayerHandler {
            }
        }
    }
+    
+    
+    
+     
+     
+     
+     
+     
 }
