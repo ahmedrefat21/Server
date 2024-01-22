@@ -70,8 +70,23 @@ public class DAO {
             }
         }else{
             return "This Email is alreay sign-in";  
-        }
-              
+        }        
     }
     
+    public Boolean checkIsOnline(String email){
+         try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps= connection.prepareStatement("select isactive from player where email = ?");
+            ps.setString(1, email);
+            result = ps.executeQuery();
+            result.next();
+            Boolean isOnline = result.getBoolean("isactive");
+            return isOnline ;
+         } catch (SQLException ex) {
+               ex.printStackTrace();
+         }
+         return false;
+         
+     }
 }
