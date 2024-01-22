@@ -307,5 +307,10 @@ public class PlayerHandler extends Thread implements Initializable {
                 }
             }
         }
+    
+    private synchronized void restate(){
+        System.out.println("reset: " +email);
+        server.setNotBusy(email);
+    }
 
 }
