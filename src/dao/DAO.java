@@ -33,6 +33,24 @@ public class DAO {
     }
     
     
+    
+    public synchronized int retriveScore(String email){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement pst = connection.prepareStatement("select * from player where email = ?");
+            pst.setString(1, email);
+            result = pst.executeQuery();
+            result.next();
+            int score = result.getInt(5);
+            return score;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
+    } 
+    
+    
     public synchronized String checkisalreadyloginIn(String email, String password){
         if(!checkIsOnline(email)){
             try { 
