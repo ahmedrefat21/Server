@@ -81,6 +81,17 @@ public class PlayerHandler {
        p.ps.println("gameTic");
        p.ps.println(button);
     } 
-     
+    
+     private void oppositeMove(){
+        String mail = token.nextToken();
+        String button = token.nextToken();  
+        PlayerHandler player = game.get(mail);
+        if(game.containsKey(email)){
+            game.remove(player.email);
+            game.remove(this.email);
+        }
+        player.ps.println("finalgameTic");
+        player.ps.println(button);
+    }
      
 }
