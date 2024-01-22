@@ -312,5 +312,13 @@ public class PlayerHandler extends Thread implements Initializable {
         System.out.println("reset: " +email);
         server.setNotBusy(email);
     }
+    
+    
+    private void updateScore(){
+       String mail = token.nextToken();
+       int score = Integer.parseInt(token.nextToken());
+       System.out.println(score);
+       server.updateScore(mail, score);
+   }
 
 }
