@@ -273,6 +273,62 @@ public class DAO {
         return db;
     }
     
+          public synchronized ResultSet getActivePlayersChart(){
+        try {
+            this.pst =connection.prepareStatement("SELECT COUNT(*) AS true_count FROM PLAYER WHERE isactive = true",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_READ_ONLY  );
+            return pst.executeQuery(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("catch getactive");
+            return null;
+        }
+        
+    }
+          
+
+        
+    public synchronized ResultSet getOfflinePlayers( ){   
+        try {
+            this.pst =connection.prepareStatement("SELECT COUNT(*) AS false_count FROM PLAYER WHERE isactive = false",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_READ_ONLY  );
+            return pst.executeQuery(); 
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+        }
+        
+    }
+    
+    
+        public synchronized ResultSet getOnlinePlayers( ){
+        
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps =connection.prepareStatement("Select * from player where isactive = true ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_READ_ONLY  );
+            return ps.executeQuery(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        
+    }
+    
+        public synchronized int getOfflineUsers() {
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("select count(*) from player where isactive = false", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet r = ps.executeQuery();
+            if (r.next()) {
+                return r.getInt(1);
+            } else {
+                return -1;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
+    }
 }
 
 
