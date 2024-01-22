@@ -49,7 +49,28 @@ public class PlayerHandler {
     
     
     
-     
+     private void signUp(){
+        String username = token.nextToken();
+        email = token.nextToken();
+        String password = token.nextToken();
+        System.out.println(username+" "+email+" "+password);
+        String data;
+
+       try{
+            data = server.checkSignUp(username, email);
+            ps.println(data);
+            if(data.equals("Registered Successfully")){
+                ps.println(username+"###"+email); 
+                server.SignUp(username,email,password);
+                System.out.println("User is registered now , check database");   
+                activeUsers.add(this);
+            }else if (data.equals("already signed-up")){
+                ps.println("already signed-up"+"###");
+            }
+       }catch(SQLException e){
+           e.printStackTrace();
+        }
+   }
      
      
      
