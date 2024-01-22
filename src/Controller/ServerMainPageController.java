@@ -89,7 +89,7 @@ public class ServerMainPageController implements Initializable {
         }
 
          
-     
+     @FXML 
    private void StartChart() {
     try {
 
