@@ -34,8 +34,10 @@ public class ServerHandler {
     }   
     
     
-    
-    
+   public void getOnlinePlayers(){
+        database.getOnlinePlayers();
+    } 
+
     
     
     
