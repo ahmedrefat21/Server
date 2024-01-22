@@ -6,6 +6,7 @@
 package Model;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  *
@@ -38,6 +39,9 @@ public class ServerHandler {
     }
         
         
+        public void SignUp(String username,String email,String password) throws SQLException{
+        database.SignUp(username,email,password);
+    }
         
         public String checkSignUp(String username,String email){
         return database.checkIsalreadysignedup(username, email);
