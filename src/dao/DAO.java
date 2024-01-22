@@ -294,6 +294,14 @@ public class DAO {
         }
     }
     
+    
+    public synchronized static DAO getDataBase() throws SQLException {
+        if(db == null){
+            db = new DAO();
+        }
+        return db;
+    }
+    
 }
 
 
