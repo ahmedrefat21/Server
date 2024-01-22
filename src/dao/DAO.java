@@ -23,6 +23,7 @@ public class DAO {
         return result;
     }
     
+    
     private  DAO() throws SQLException{
          DriverManager.registerDriver(new ClientDriver());
          connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToe","root","root");
@@ -31,9 +32,16 @@ public class DAO {
     
     
     
-    
-    
-    
+    public synchronized void ResultSet(){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy","root","root");
+            PreparedStatement ps=connection.prepareStatement("Select * from player",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_READ_ONLY  );
+            result= ps.executeQuery(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
     
     
     
@@ -241,9 +249,18 @@ public class DAO {
     
     
     
-    
-    
-    
+   public synchronized void changeToNotBusy(){
+         try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("update player set isPlaying = ? ",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            ps.setString(1, "false");
+            ps.executeUpdate(); 
+            ResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
     
     
     
