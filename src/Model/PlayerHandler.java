@@ -11,6 +11,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +35,8 @@ public class PlayerHandler extends Thread implements Initializable {
    private Boolean refreshList;   
    private ResultSet result;
    private Thread thread;
+   static ArrayList<PlayerHandler> activeUsers = new ArrayList(); 
+   static HashMap<String,PlayerHandler> game = new HashMap(); 
     
     
     
@@ -119,6 +123,20 @@ public class PlayerHandler extends Thread implements Initializable {
         }
     });
     thread.start();
-   }
+    }
+    
+    private void logout(){
+        email = token.nextToken();
+        System.out.println("Logout Email " + email);
+        if(email != null){
+            server.setOnline(false, email);
+            activeUsers.remove(email);
+        }
+       try {
+           mySocket.close();
+       } catch (IOException ex) {
+           Logger.getLogger(PlayerHandler.class.getName()).log(Level.SEVERE, null, ex);
+       }
+    }
     
 }
