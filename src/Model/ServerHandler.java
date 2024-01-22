@@ -44,7 +44,9 @@ public class ServerHandler {
         return database.getActivePlayersChart();
     }
     
- 
+    public ResultSet getOfflinePlayers(){
+        return database.getOfflinePlayers();
+    }
     
     
     
