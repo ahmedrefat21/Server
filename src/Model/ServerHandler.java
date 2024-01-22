@@ -5,8 +5,19 @@
  */
 package Model;
 
+
 import java.io.IOException;
 import java.sql.SQLException;
+
+import dao.DAO;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -14,6 +25,7 @@ import java.sql.SQLException;
  */
 public class ServerHandler {
     
+
     
     
     
@@ -22,11 +34,44 @@ public class ServerHandler {
             database.disConnection();
             thread.stop();
             serverSocket.close();
+
+    private static ServerHandler server;
+    public DAO database ;
+    private ServerSocket serverSocket ;
+    private Socket socket ;
+    private Thread thread;
+
+    
+    private ServerHandler(){}
+    
+    public static ServerHandler getServer(){
+        if(server == null){
+            server = new ServerHandler();
+        }
+        return server;
+    }
+    
+    
+    private void startServer(){
+        try {
+            serverSocket = new ServerSocket(5005);
+            thread = new Thread(() -> {
+                while(true){
+                    try {
+                        socket = serverSocket.accept();
+                        new PlayerHandler(socket); 
+                    }catch (IOException ex) {
+                        ex.printStackTrace();
+                    }    
+                }
+            });
+            thread.start();
+
         }catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-    
+
     
     
     public void setNotBusy(String email){
@@ -52,6 +97,26 @@ public class ServerHandler {
         public void updateScore(String mail,int score){
         database.updateScore(mail, score);
     }
+
+    public String checkIslogin(String email,String password){
+        return database.checkisalreadyloginIn(email, password);
+    }
+    
+     public void setOnline(Boolean state, String mail){
+        database.setOnline(false,mail);
+    }
+     
+    public int retriveScore(String email){
+        return database.retriveScore(email);
+    }
+    
+    public void login(String email,String password) throws SQLException{
+        database.login(email, password);
+    }
+    
+    
+    
+
 }
 
 
