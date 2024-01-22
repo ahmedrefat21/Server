@@ -40,7 +40,11 @@ public class ServerHandler {
     public ResultSet getActivePlayers(){
         return database.getOnlinePlayers();
     }
-
+    public ResultSet getActivePlayersChart(){
+        return database.getActivePlayersChart();
+    }
+    
+ 
     
     
     
