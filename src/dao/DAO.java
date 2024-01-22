@@ -100,4 +100,19 @@ public class DAO {
         ps.executeUpdate(); 
         ResultSet();          
     }
+    
+    
+    public synchronized void  setOnline(boolean state , String email){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("update player set isActive = ? where email = ?");
+            ps.setString(1, state+"");
+            ps.setString(2, email);
+            ps.executeUpdate(); 
+            ResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
