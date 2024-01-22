@@ -115,4 +115,20 @@ public class DAO {
             ex.printStackTrace();
         }
     }
+    
+    public synchronized String getEmail(String username){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps= connection.prepareStatement("select * from player where username = ?");
+            ps.setString(1, username);
+            result = ps.executeQuery();
+            result.next();
+            String email = result.getString(3);
+            return email;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }
