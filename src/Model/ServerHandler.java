@@ -5,10 +5,30 @@
  */
 package Model;
 
+import java.io.IOException;
+
 /**
  *
  * @author ahmed
  */
 public class ServerHandler {
     
+    
+    
+    
+    public void endConnections(){
+        try {
+            database.disConnection();
+            thread.stop();
+            serverSocket.close();
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
+
+
+
+
+
+
