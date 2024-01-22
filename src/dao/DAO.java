@@ -37,6 +37,24 @@ public class DAO {
             ex.printStackTrace();
         }
     }
+    
+    
+    
+    
+    public synchronized void SignUp(String username , String email, String password) throws SQLException{
+        DriverManager.registerDriver(new ClientDriver());
+        connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+        PreparedStatement ps = connection.prepareStatement("insert into player(username,email,password) values(?,?,?)");
+        ps.setString(1, username);
+        ps.setString(2, email);
+        ps.setString(3, password);
+        ps.executeUpdate(); 
+        login(email,password);
+    }
+    
+    
+    
+    
 }
 
 
