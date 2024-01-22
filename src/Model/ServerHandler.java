@@ -55,4 +55,10 @@ public class ServerHandler {
         }
     }
     
+    
+    
+     public void setOnline(Boolean state, String mail){
+        database.setOnline(false,mail);
+    }
+    
 }
