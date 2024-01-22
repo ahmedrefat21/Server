@@ -43,6 +43,19 @@ public class DAO {
     }
     
     
+    public synchronized ResultSet getActivePlayersChart(){
+        try {
+            this.pst =connection.prepareStatement("SELECT COUNT(*) AS true_count FROM PLAYER WHERE isactive = true",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_READ_ONLY  );
+            return pst.executeQuery(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("catch getactive");
+            return null;
+        }
+        
+    }
+    
+    
     
     
 }
