@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,5 +63,15 @@ public class ServerHandler {
      public void setOnline(Boolean state, String mail){
         database.setOnline(false,mail);
     }
+     
+    public int retriveScore(String email){
+        return database.retriveScore(email);
+    }
+    
+    public void login(String email,String password) throws SQLException{
+        database.login(email, password);
+    }
+    
+    
     
 }
