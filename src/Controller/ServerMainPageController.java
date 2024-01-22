@@ -62,16 +62,42 @@ public class ServerMainPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        serverState = false;
+        server = ServerHandler.getServer();
     }    
 
     @FXML
-    private void startServer(ActionEvent event) {
-    }
+    private void startServer(ActionEvent event) throws InterruptedException{
+        
+        serverState = !serverState;
+        if(serverState){
+            try {
+              server.startConnections();
+              System.out.println("The server is UP");
+               StartChart();              
+            }catch(SQLException e){
+                System.out.println("wrong in the connection");
+                serverState = !serverState;
+            }
 
-    @FXML
-    private void shutDown(ActionEvent event) {
-    }
+        }
+        }
+
+      @FXML
+         private void shutDown(ActionEvent event) throws InterruptedException{
+        
+        serverState = !serverState;
+        if(!serverState) 
+            try {
+
+                System.out.println("The server is down");
+                stopChart();
+            }
+
+            finally{
+                server.endConnections();
+            }
+        }
 
     @FXML
     private void StartChart(ActionEvent event) {
