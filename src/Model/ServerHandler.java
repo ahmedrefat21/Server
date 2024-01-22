@@ -30,6 +30,11 @@ public class ServerHandler {
     
     public void setNotBusy(String email){
         database.setNotBusy(email);
+    
+        
+        
+        public String getPlayerUserName(String email){
+        return database.getUserName(email);
     }
 }
 
