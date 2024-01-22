@@ -107,7 +107,34 @@ public class ServerMainPageController implements Initializable {
         System.out.println(ex);
     }
 
-   }
+      
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.getData().clear(); 
+
+        XYChart.Data<String, Number> onlineData = new XYChart.Data<>("Online", trueCount);
+        XYChart.Data<String, Number> offlineData = new XYChart.Data<>("Offline", falseCount);
+
+        series.getData().add(onlineData);
+        series.getData().add(offlineData);
+
+        onlineData.nodeProperty().addListener((ov, oldNode, newNode) -> {
+        if (newNode != null) {
+            newNode.setStyle("-fx-bar-fill: #A4C991;");
+        }
+         });
+
+        offlineData.nodeProperty().addListener((ov, oldNode, newNode) -> {
+        if (newNode != null) {
+            newNode.setStyle("-fx-bar-fill: #ea6e6e;");
+        }
+        });
+
+        CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
+        xAxis.setCategories(FXCollections.observableArrayList("Online", "Offline"));
+
+         barChart.getData().setAll(series); 
+        }
+
          
          
          
