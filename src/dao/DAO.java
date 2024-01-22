@@ -277,6 +277,23 @@ public class DAO {
         
     }
     
+    
+    public synchronized void make2PlayersBusy(String player1, String player2){
+        try {
+            DriverManager.registerDriver(new ClientDriver());
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TicTacToy", "root", "root");
+            PreparedStatement ps = connection.prepareStatement("update player set isPlaying = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            ps.setString(1, player1);
+            ps.executeUpdate();
+            ps = connection.prepareStatement("update player set isPlaying = true  where email = ?",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_UPDATABLE  );
+            ps.setString(1, player2);
+            ps.executeUpdate();
+            ResultSet();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
 }
 
 
