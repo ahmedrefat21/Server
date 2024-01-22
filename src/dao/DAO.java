@@ -27,7 +27,20 @@ public class DAO {
             return null;
         }
         
-    }   
+    } 
+    
+    
+    public synchronized ResultSet getOfflinePlayers( ){   
+        try {
+            this.pst =connection.prepareStatement("SELECT COUNT(*) AS false_count FROM PLAYER WHERE isactive = false",ResultSet.TYPE_SCROLL_SENSITIVE ,ResultSet.CONCUR_READ_ONLY  );
+            return pst.executeQuery(); 
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("catch getactive");
+            return null;
+        }
+        
+    }
     
     
     
