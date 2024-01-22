@@ -36,6 +36,12 @@ public class ServerHandler {
         public String getPlayerUserName(String email){
         return database.getUserName(email);
     }
+        
+        
+        
+        public String checkSignUp(String username,String email){
+        return database.checkIsalreadysignedup(username, email);
+    }
 }
 
 
